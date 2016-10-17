@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="spencer.cn.zuglibs.MainActivity">
+
+    <Button
+        android:id="@+id/camera"
+        android:text="拍照(返回完整照片)"
+        android:onClick="onCapture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/normal_notification"
+        android:text="发送RemoteViews Notification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/btn_camera"
+        android:text="camera照相"
+        android:onClick="onCamera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

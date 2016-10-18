@@ -32,7 +32,8 @@
                 android:resource="@xml/app_widget_provider_info_info" />
         </receiver>
 
-        <activity android:name=".CameraPictureActivity"></activity>
+        <activity android:name=".CameraPictureActivity" />
+        <activity android:name=".GalleryActivity"></activity>
     </application>
 
 </manifest>

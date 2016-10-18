@@ -24,4 +24,10 @@
         android:onClick="onCamera"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/btn_callery"
+        android:text="进入Gallery选择图片"
+        android:onClick="onGallery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

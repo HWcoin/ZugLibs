@@ -1,14 +1,19 @@
 package spencer.cn.zuglibs;
 
+import android.content.ContentValues;
 import android.content.res.Configuration;
 import android.hardware.Camera;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.Button;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.OutputStream;
 
 public class CameraPictureActivity extends AppCompatActivity implements SurfaceHolder.Callback{
     Button take;
@@ -69,5 +74,28 @@ public class CameraPictureActivity extends AppCompatActivity implements SurfaceH
     public void surfaceDestroyed(SurfaceHolder holder) {
         camera.stopPreview();
         camera.release();
+    }
+
+    //点击拍照
+
+    /**
+     *
+     * @param data
+     * @param camera
+     * 往MediaStore插入一条数据并返回一个URI，利用URI获得OutputStream，用于写入byte数据
+     */
+    public void onPictureTaken(byte[] data, Camera camera){
+        Uri imageFileUri = getContentResolver().insert(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, new ContentValues());
+        try {
+            OutputStream out = getContentResolver().openOutputStream(imageFileUri);
+            out.write(data);
+            out.flush();
+            out.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        camera.startPreview();
     }
 }

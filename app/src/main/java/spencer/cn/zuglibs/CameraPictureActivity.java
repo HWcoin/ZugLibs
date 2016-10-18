@@ -7,15 +7,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.widget.Button;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class CameraPictureActivity extends AppCompatActivity implements SurfaceHolder.Callback{
+public class CameraPictureActivity extends AppCompatActivity implements SurfaceHolder.Callback,
+                        Camera.PictureCallback, View.OnClickListener{
     Button take;
     SurfaceView surfaceView;
     SurfaceHolder holder;
@@ -32,6 +35,14 @@ public class CameraPictureActivity extends AppCompatActivity implements SurfaceH
         holder = surfaceView.getHolder();
         holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         holder.addCallback(this);
+
+        /**
+         * 拍照时SurfaceView必须设置
+         */
+        surfaceView.setFocusable(true);
+        surfaceView.setFocusableInTouchMode(true);
+        surfaceView.setClickable(true);
+        surfaceView.setOnClickListener(this);
     }
 
     @Override
@@ -83,8 +94,11 @@ public class CameraPictureActivity extends AppCompatActivity implements SurfaceH
      * @param data
      * @param camera
      * 往MediaStore插入一条数据并返回一个URI，利用URI获得OutputStream，用于写入byte数据
+     * camera调用takePicture时传入CallBack作为回调接口
      */
+    @Override
     public void onPictureTaken(byte[] data, Camera camera){
+        Log.e("SOS", "onpicturetaken");
         Uri imageFileUri = getContentResolver().insert(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, new ContentValues());
         try {
             OutputStream out = getContentResolver().openOutputStream(imageFileUri);
@@ -98,4 +112,23 @@ public class CameraPictureActivity extends AppCompatActivity implements SurfaceH
         }
         camera.startPreview();
     }
+
+    /**
+     * 点击拍照
+     * @param v
+     */
+    @Override
+    public void onClick(View v) {
+        camera.takePicture(null, null, null, this);
+    }
+    /**
+     * 延时拍照实现：
+     * 需要使用到Timer，因此也需要用到Handler
+     * Runnable timerTask = new Runnable(){
+     *     public void run(){
+     *         camera.takePicture(null, null, null CameraPictureActivity.class);
+     *     }
+     * }
+     * timerHandler.postDelayed(timerTask, 10000);
+     */
 }
